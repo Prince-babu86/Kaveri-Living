@@ -11,7 +11,7 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "https://kaveri-living.vercel.app/",
+    origin: "https://kaveri-living.vercel.app",
     credentials: true,
 }));
 // routes
