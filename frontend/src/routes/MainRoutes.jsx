@@ -12,6 +12,7 @@ import Loundary from "../pages/Loundary";
 import UserDashboard from "../pages/UserDashboard";
 import Complaint from "../pages/Complaint";
 import Query from "../pages/Query";
+import PageNotFound from "../pages/PageNotFound";
 
 const MainRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const MainRoutes = () => {
         <Route path="/user-dashboard" element={<UserDashboard />} />
          <Route path="/complaint" element={<Complaint />} />
          <Route path="/query" element={<Query />} />
+         <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };

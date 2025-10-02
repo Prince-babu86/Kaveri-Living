@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+.menubar-mobile{
+    display: none;
+}
+
+@media (max-width: 640px) {
+    .menubar-mobile {
+        display: block;
+    }
+    
+}

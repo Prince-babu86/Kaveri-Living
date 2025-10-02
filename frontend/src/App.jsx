@@ -6,36 +6,32 @@ import Navbar from "./components/Navbar";
 import MainLoader from "./pages/MainLoader";
 import axios from "axios";
 import AdminDashboard from "./pages/AdminDashBoard";
+import Menubar from "./components/Menubar";
 // import { LogIn } from 'lucide-react'
 
 const App = () => {
   const [loaded, setLoaded] = useState(false);
 
-  const handeldata = async () => {
-    let res = await axios.get("http://localhost:3000/auth/dd", {
-      withCredentials: true,
-    });
-    console.log(res.data);
-    // let data =  res.data();
-    // console.log(data);
-  };
-
-  useEffect(() => {
-    handeldata();
-  });
-
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 3000); // simulate load
     return () => clearTimeout(timer);
   }, []);
+
+  let location = window.location.pathname;
+  let isAuthRoute =
+    location === "/login" ||
+    location === "/user-register" ||
+    location === "/adminregister";
+
   return (
     <div className="min-h-screen w-full bg-[#000000]">
       <div>
         {/* <AdminDashboard/> */}
-        <MainLoader />
-        <Navbar />
-        <MainRoutes />
-        <Footer />
+        {/* <MainLoader /> */}
+        {!isAuthRoute && <Navbar />}
+        {<MainRoutes />}
+        {!isAuthRoute && <Footer />}
+        {!isAuthRoute && <Menubar />}
       </div>
     </div>
   );

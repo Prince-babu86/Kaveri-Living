@@ -18,6 +18,9 @@ router.get("/cookie" , authMiddleware , (req,res) => {
 
 router.get("/dd" , authMiddleware , (req , res) =>  {
   let user = req.user
+  user = user.toObject();
+  delete user.password
+ 
   res.send({user})
 })
 

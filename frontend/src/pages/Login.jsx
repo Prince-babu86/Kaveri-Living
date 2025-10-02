@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ShieldCheck } from "lucide-react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import axios from '../config/axios.config'
 
 function AdminLoginDark() {
   const [formData, setFormData] = useState({
@@ -11,6 +11,7 @@ function AdminLoginDark() {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,10 +23,10 @@ function AdminLoginDark() {
     setMessage("");
 
     try {
-      let res = await axios.post("http://localhost:3000/auth/login", formData, {
+      let res = await axios.post("/auth/login", formData, {
         withCredentials: true,
       });
-      console.log(res.data);
+      navigate("/");
       setMessage("✅ Login Successful!");
     } catch (error) {
       console.log(error.message);

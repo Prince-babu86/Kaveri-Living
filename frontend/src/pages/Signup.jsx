@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { UserPlus } from "lucide-react"; // nice icon
-import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from '../config/axios.config'
 
 export default function UserRegister() {
   const [formData, setFormData] = useState({
@@ -15,6 +15,7 @@ export default function UserRegister() {
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,12 +28,12 @@ export default function UserRegister() {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/auth/user-register",
+        "/auth/user-register",
         formData,
         { withCredentials: true }
       );
       setMessage("✅ User Registered Successfully!");
-      console.log(res.data);
+      navigate("/")
     } catch (err) {
       console.error(err);
       setMessage("❌ Registration failed: " + (err.response?.data?.message || "Error"));
