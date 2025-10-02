@@ -25,7 +25,13 @@ const UserController = async (req, res) => {
     });
 
     let token = jwt.sign({ id: newuser._id, role: newuser.role }, process.env.JWT_SECRET);
-    res.cookie("token", token);
+    res.cookie("token", token , {
+      httpOnly: true, // JS cannot access it → prevents XSS
+      secure: true, // true if using HTTPS (production), false for dev
+      sameSite: "none", // prevents CSRF; "Strict" or "None" possible
+      maxAge: 24 * 60 * 60 * 1000, // cookie expires in 1 day (milliseconds)
+      path: "/", // cookie is valid across entire site
+    });
     res.status(201).json({ success: true, user: newuser });
   } catch (error) {
     console.log(error);
@@ -59,8 +65,8 @@ const AdminController = async (req, res) => {
     let token = jwt.sign({ id: newuser._id, role: newuser.role }, process.env.JWT_SECRET);
     res.cookie("token", token, {
       httpOnly: true, // JS cannot access it → prevents XSS
-      secure: false, // true if using HTTPS (production), false for dev
-      sameSite: "Lax", // prevents CSRF; "Strict" or "None" possible
+      secure: true, // true if using HTTPS (production), false for dev
+      sameSite: "none", // prevents CSRF; "Strict" or "None" possible
       maxAge: 24 * 60 * 60 * 1000, // cookie expires in 1 day (milliseconds)
       path: "/", // cookie is valid across entire site
     });
@@ -94,7 +100,13 @@ const loginController = async (req, res) => {
     }
 
     let token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
-    res.cookie("token", token);
+    res.cookie("token", token , {
+      httpOnly: true, // JS cannot access it → prevents XSS
+      secure: true, // true if using HTTPS (production), false for dev
+      sameSite: "none", // prevents CSRF; "Strict" or "None" possible
+      maxAge: 24 * 60 * 60 * 1000, // cookie expires in 1 day (milliseconds)
+      path: "/", // cookie is valid across entire site
+    });
 
     res.status(200).json({ success: true, user });
   } catch (error) {
