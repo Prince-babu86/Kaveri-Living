@@ -17,8 +17,15 @@ router.get("/cookie" , authMiddleware , (req,res) => {
 })
 
 router.get("/dd" , authMiddleware , (req , res) =>  {
-  let token = req.user
-  res.send(token)
+  let user = req.user
+  res.send({user})
+})
+
+
+router.post("/test" , (req,res) => {
+  let {email , password} = req.body
+  res.send({email,password})
+  // res.send("Test route")
 })
 
 

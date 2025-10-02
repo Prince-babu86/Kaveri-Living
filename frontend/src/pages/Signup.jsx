@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { UserPlus } from "lucide-react"; // icon for user registration
+import { UserPlus } from "lucide-react"; // nice icon
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default function UserRegister() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    password: "",   
+    room: "",
+    password: "",
     confirmPassword: "",
   });
+
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,14 +22,23 @@ export default function UserRegister() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("User Registration:", formData);
+    setLoading(true);
+    setMessage("");
+
     try {
-        let res = await axios.post("http://localhost:3000/auth/user-register", formData);
-        console.log(res.data);
-    } catch (error) {
-        console.log(error);
+      const res = await axios.post(
+        "http://localhost:3000/auth/user-register",
+        formData,
+        { withCredentials: true }
+      );
+      setMessage("✅ User Registered Successfully!");
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
+      setMessage("❌ Registration failed: " + (err.response?.data?.message || "Error"));
+    } finally {
+      setLoading(false);
     }
-    // Here you can call your backend API
   };
 
   return (
@@ -33,13 +47,13 @@ export default function UserRegister() {
         
         {/* Header */}
         <div className="flex flex-col items-center mb-8">
-          <div className="p-4 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-2xl shadow-md">
+          <div className="p-4 bg-gradient-to-tr from-green-500 to-teal-600 rounded-2xl shadow-md">
             <UserPlus className="h-10 w-10 text-white" />
           </div>
           <h1 className="text-2xl font-extrabold text-white mt-4">
-            User Registration
+            Kaveri Living Hostel
           </h1>
-          <p className="text-sm text-gray-400">Create your account</p>
+          <p className="text-sm text-gray-400">User Registration</p>
         </div>
 
         {/* Form */}
@@ -48,36 +62,54 @@ export default function UserRegister() {
             { placeholder: "Full Name", name: "name", type: "text" },
             { placeholder: "Email Address", name: "email", type: "email" },
             { placeholder: "Phone Number", name: "phone", type: "tel" },
+            { placeholder: "Room No", name: "room", type: "text" },
             { placeholder: "Password", name: "password", type: "password" },
             { placeholder: "Confirm Password", name: "confirmPassword", type: "password" },
           ].map((field, index) => (
-            <input
-              key={index}
-              type={field.type}
-              name={field.name}
-              value={formData[field.name]}
-              onChange={handleChange}
-              required
-              placeholder={field.placeholder}
-              className="w-full border-b border-gray-600 bg-transparent px-1 py-3 text-sm text-white placeholder-gray-400 focus:border-purple-500 focus:outline-none transition"
-            />
+            <div key={index}>
+              <input
+                type={field.type}
+                name={field.name}
+                value={formData[field.name]}
+                onChange={handleChange}
+                required
+                placeholder={field.placeholder}
+                className="w-full border-b border-gray-600 bg-transparent px-1 py-3 text-sm text-white placeholder-gray-400 focus:border-green-500 focus:outline-none transition"
+              />
+            </div>
           ))}
 
-          {/* Register Button */}
+          {/* Button */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 hover:from-indigo-600 hover:via-purple-700 hover:to-pink-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-purple-500/30 transition duration-300"
+            disabled={loading}
+            className={`w-full flex items-center justify-center bg-gradient-to-r from-green-500 via-teal-600 to-emerald-600 
+            hover:from-green-600 hover:via-teal-700 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl shadow-lg 
+            hover:shadow-green-500/30 transition duration-300 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
-            Register
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                {/* Unique Loader */}
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Registering...</span>
+              </div>
+            ) : (
+              "Register"
+            )}
           </button>
         </form>
+
+        {/* Message */}
+        {message && (
+          <p className="text-sm text-center mt-4 text-gray-300">{message}</p>
+        )}
 
         {/* Footer */}
         <p className="text-xs text-center text-gray-500 mt-6">
           Already have an account?{" "}
-          <a href="/login" className="text-purple-400 font-medium hover:underline">
+          <Link to="/login" className="text-green-400 font-medium hover:underline">
             Login
-          </a>
+          </Link>
         </p>
       </div>
     </div>

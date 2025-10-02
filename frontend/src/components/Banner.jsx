@@ -1,82 +1,65 @@
-// SplitWelcomePage.jsx
-import React from "react";
 import { motion } from "framer-motion";
 
-const rooms = [
-  {
-    title: "Luxury Room",
-    description:
-      "Spacious and modern with premium amenities for ultimate comfort.",
-    image: "https://i.pinimg.com/1200x/78/a6/c0/78a6c05d5b6fa95e257f914203d84aa3.jpg",
-  },
-  {
-    title: "Cozy Room",
-    description:
-      "Perfect for students, with a warm and welcoming environment.",
-    image: "https://i.pinimg.com/1200x/1c/4b/40/1c4b40993064b61190e6c0ab26202f78.jpg",
-  },
-  {
-    title: "Suite Room",
-    description:
-      "Top-tier room with elegant interiors and exclusive features.",
-    image: "https://i.pinimg.com/736x/58/5d/1c/585d1c8ab394653420e3756c630a9760.jpg",
-  },
-];
-
-const SplitWelcomePage = () => {
+export default function WelcomePage() {
   return (
-    <div className="w-full bg-gray-50">
-      {rooms.map((room, index) => {
-        const isEven = index % 2 === 0;
-        return (
-          <div
-            key={index}
-            className={`flex flex-col md:flex-row items-center justify-center md:justify-between px-6 py-16 max-w-6xl mx-auto ${
-              isEven ? "md:flex-row" : "md:flex-row-reverse"
-            }`}
-          >
-            {/* Text Section */}
-            <motion.div
-              initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="md:w-1/2 flex flex-col items-start md:pr-12"
-            >
-              <h2 className="text-4xl font-extrabold text-gray-800 mb-4">
-                {room.title}
-              </h2>
-              <p className="text-gray-700 mb-6">{room.description}</p>
-              <motion.button
-                whileHover={{ scale: 1.1, boxShadow: "0px 0px 20px rgba(59,130,246,0.5)" }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg"
-              >
-                Book Now
-              </motion.button>
-            </motion.div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-950 via-black to-gray-900 px-6">
+      <div className="text-center max-w-3xl">
+        
+        {/* Animated Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: -40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 bg-clip-text text-transparent tracking-wide"
+        >
+          Welcome to{" "}
+          <span className="hover:text-indigo-400 transition duration-300">
+            Kaveri Living Hostel
+          </span>
+        </motion.h1>
 
-            {/* Image Section */}
-            <motion.div
-              initial={{ opacity: 0, x: isEven ? 50 : -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1 }}
-              className="md:w-1/2 mt-8 md:mt-0"
-            >
-              <div className="overflow-hidden rounded-2xl shadow-2xl cursor-pointer group">
-                <img
-                  src={room.image}
-                  alt={room.title}
-                  className="w-full h-96 object-cover transform group-hover:scale-105 transition duration-500"
-                />
-              </div>
-            </motion.div>
-          </div>
-        );
-      })}
+        {/* Subtitle */}
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 1 }}
+          className="mt-6 text-lg md:text-xl text-gray-400 max-w-2xl mx-auto"
+        >
+          A premium place for comfort, care, and community.  
+          Your stay, your style ✨
+        </motion.p>
+
+        {/* Hover Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 1 }}
+          className="mt-10 flex flex-wrap justify-center gap-4"
+        >
+          <a
+            href="/about"
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 text-white font-medium shadow-lg hover:scale-105 hover:shadow-indigo-500/30 transition-all duration-300"
+          >
+            About Us
+          </a>
+          <a
+            href="/contact"
+            className="px-6 py-3 rounded-xl border border-indigo-500 text-indigo-400 font-medium hover:bg-indigo-600 hover:text-white transition-all duration-300"
+          >
+            Contact
+          </a>
+        </motion.div>
+
+        {/* Footer Text */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="mt-12 text-xs text-gray-500"
+        >
+          © 2025 Kaveri Living Hostel. All Rights Reserved.
+        </motion.p>
+      </div>
     </div>
   );
-};
-
-export default SplitWelcomePage;
+}

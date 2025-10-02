@@ -1,19 +1,38 @@
 import { useState } from "react";
-import { ShieldCheck } from "lucide-react"; // Admin shield icon
+import { ShieldCheck } from "lucide-react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
-export default function AdminLoginDark() {
+function AdminLoginDark() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login Submitted:", formData);
+    setLoading(true);
+    setMessage("");
+
+    try {
+      let res = await axios.post("http://localhost:3000/auth/login", formData, {
+        withCredentials: true,
+      });
+      console.log(res.data);
+      setMessage("✅ Login Successful!");
+    } catch (error) {
+      console.log(error.message);
+      setMessage("❌ Login Failed: " + (error.response?.data?.message || "Error"));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -66,20 +85,41 @@ export default function AdminLoginDark() {
           {/* Neon Gradient Button */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 hover:from-indigo-600 hover:via-purple-700 hover:to-pink-700 text-white font-semibold py-3 rounded-xl shadow-lg hover:shadow-purple-500/30 transition duration-300"
+            disabled={loading}
+            className={`w-full flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 
+            hover:from-indigo-600 hover:via-purple-700 hover:to-pink-700 text-white font-semibold py-3 rounded-xl shadow-lg 
+            hover:shadow-purple-500/30 transition duration-300 ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
           >
-            Login
+            {loading ? (
+              <div className="flex items-center space-x-2">
+                {/* Unique Loader */}
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Logging in...</span>
+              </div>
+            ) : (
+              "Login"
+            )}
           </button>
         </form>
+
+        {/* Message */}
+        {message && (
+          <p className="text-sm text-center mt-4 text-gray-300">{message}</p>
+        )}
 
         {/* Footer */}
         <p className="text-xs text-center text-gray-500 mt-6">
           Don’t have an account?{" "}
-          <a href="/register" className="text-purple-400 font-medium hover:underline">
+          <Link
+            to="/user-register"
+            className="text-purple-400 font-medium hover:underline"
+          >
             Register
-          </a>
+          </Link>
         </p>
       </div>
     </div>
   );
 }
+
+export default AdminLoginDark;

@@ -34,6 +34,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "default.png", // can be uploaded later
     },
+    room:{
+      type: String,
+      required:true,
+      trim:true,
+      default:0
+    }
   },
   { timestamps: true }
 );

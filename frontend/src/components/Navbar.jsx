@@ -1,112 +1,73 @@
 import { useState } from "react";
-import { Menu, X, ShieldCheck } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
-export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function NavbarDark() {
+  const [user, setUser] = useState("prince"); // Example user
 
-  // Example user data (replace with actual auth user)
-  const user = {
-    name: "Kaveri Admin",
-    image: null, // If no image, fallback to first letter
-  };
-
-  const menuItems = [
-    { name: "Dashboard", href: "/dashboard" },
-    { name: "Hostel Rooms", href: "/rooms" },
-    { name: "Students", href: "/students" },
-    { name: "Bookings", href: "/bookings" },
-    { name: "Payments", href: "/payments" },
-  ];
+  const linkClass = ({ isActive }) =>
+    `transition ${
+      isActive
+        ? "text-indigo-400 underline underline-offset-4 font-semibold"
+        : "text-gray-300 hover:text-indigo-400 hover:underline underline-offset-4"
+    }`;
 
   return (
-    <nav className="bg-gray-900/90 backdrop-blur-lg border-b border-gray-800 shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="p-2 bg-gradient-to-tr from-indigo-500 to-purple-600 rounded-lg">
-              <ShieldCheck className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-white font-bold text-lg">Kaveri Hostel</span>
-          </div>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6">
-            {menuItems.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                className="text-gray-300 hover:text-purple-400 transition font-medium"
-              >
-                {item.name}
-              </NavLink>
-            ))}
-
-            {/* Profile Section */}
-            <div className="flex items-center space-x-3">
-              {user.image ? (
-                <img
-                  src={user.image}
-                  alt="User"
-                  className="h-9 w-9 rounded-full border border-purple-500 shadow-md"
-                />
-              ) : (
-                <div className="h-9 w-9 flex items-center justify-center rounded-full bg-gradient-to-tr from-purple-500 to-indigo-600 text-white font-bold">
-                  {user.name.charAt(0)}
-                </div>
-              )}
-              <span className="text-gray-200 font-medium">
-                {user.name.split(" ")[0]}
-              </span>
-            </div>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-300 hover:text-white focus:outline-none"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-          </div>
-        </div>
+    <nav className="w-full bg-gradient-to-r from-gray-900 via-black to-gray-950 border-b border-gray-800 px-6 py-3 flex justify-between items-center shadow-lg">
+      
+      {/* Left: Logo */}
+      <div className="text-sm font-bold text-indigo-400 tracking-wide">
+        <NavLink to="/" className="hover:text-indigo-300 transition">
+          Kaveri Living Hostel
+        </NavLink>
       </div>
 
-      {/* Mobile Dropdown */}
-      {isOpen && (
-        <div className="md:hidden bg-gray-900 border-t border-gray-800 px-4 py-3 space-y-3">
-          {menuItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              className="block text-gray-300 hover:text-purple-400 transition font-medium"
-            >
-              {item.name}
-            </a>
-          ))}
+      {/* Center: Menu */}
+      <div className="hidden md:flex space-x-6 text-xs font-medium">
+        <NavLink to="/" className={linkClass}>Home</NavLink>
+        <NavLink to="/laundry" className={linkClass}>Laundry</NavLink>
+        <NavLink to="/tiffin" className={linkClass}>Tiffin</NavLink>
+        <NavLink to="/user-dashboard" className={linkClass}>Dashboard</NavLink>
+        <NavLink to="/query" className={linkClass}>Query</NavLink>
+        <NavLink to="/contact" className={linkClass}>Contact</NavLink>
+        <NavLink to="/complaint" className={linkClass}>Complaint</NavLink>
+      </div>
 
-          {/* Profile for Mobile */}
-          <div className="flex items-center space-x-3 pt-3 border-t border-gray-800">
-            {user.image ? (
-              <img
-                src={user.image}
-                alt="User"
-                className="h-9 w-9 rounded-full border border-purple-500 shadow-md"
-              />
-            ) : (
-              <div className="h-9 w-9 flex items-center justify-center rounded-full bg-gradient-to-tr from-purple-500 to-indigo-600 text-white font-bold">
-                {user.name.charAt(0)}
-              </div>
-            )}
-            <span className="text-gray-200 font-medium">
-              {user.name.split(" ")[0]}
+      {/* Right: User / Auth */}
+      <div className="flex items-center space-x-4">
+        {user ? (
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-white text-xs font-semibold uppercase shadow-md">
+              {user.charAt(0)}
+            </div>
+            <span className="text-xs font-medium text-gray-300 capitalize">
+              {user}
             </span>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="flex space-x-3 text-xs font-medium">
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                isActive
+                  ? "px-3 py-1 border border-indigo-500 rounded-lg text-white bg-indigo-600"
+                  : "px-3 py-1 border border-indigo-500 rounded-lg text-indigo-400 hover:bg-indigo-500 hover:text-white transition"
+              }
+            >
+              Login
+            </NavLink>
+            <NavLink
+              to="/signup"
+              className={({ isActive }) =>
+                isActive
+                  ? "px-3 py-1 bg-indigo-600 text-white rounded-lg"
+                  : "px-3 py-1 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition"
+              }
+            >
+              Sign Up
+            </NavLink>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }

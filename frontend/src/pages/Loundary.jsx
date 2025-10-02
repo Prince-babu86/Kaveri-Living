@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { HelpCircle } from "lucide-react";
 
-export default function QueryPage() {
+export default function LaundryServicePage() {
   const [formData, setFormData] = useState({
     name: "",
     roomNo: "",
     phone: "",
-    query: "",
+    clothes: "1", // default selection
   });
 
   const [entries, setEntries] = useState([]);
@@ -18,15 +17,15 @@ export default function QueryPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setEntries([formData, ...entries]); // add new query on top
-    setFormData({ name: "", roomNo: "", phone: "", query: "" });
+    setEntries([...entries, formData]);
+    setFormData({ name: "", roomNo: "", phone: "", clothes: "1" });
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-black to-gray-900 px-6 py-12 text-gray-300">
       <div className="max-w-4xl mx-auto space-y-12">
-
-        {/* Header */}
+        
+        {/* Hero Section */}
         <motion.div
           initial={{ opacity: 0, y: -40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -34,10 +33,10 @@ export default function QueryPage() {
           className="text-center"
         >
           <h1 className="text-4xl md:text-5xl font-extrabold text-indigo-400 mb-4">
-            Submit a Query
+            Laundry Service Registration
           </h1>
           <p className="text-gray-400 text-lg md:text-xl">
-            Have a question? Fill the form below and submit your query.
+            Add your details to avail our premium laundry service.
           </p>
         </motion.div>
 
@@ -61,7 +60,6 @@ export default function QueryPage() {
               className="w-full px-3 py-2 rounded-md bg-gray-900 border border-gray-700 text-gray-200 focus:outline-none focus:border-indigo-500 transition"
             />
           </div>
-
           <div className="flex flex-col space-y-2">
             <label className="text-sm text-gray-400">Room Number</label>
             <input
@@ -74,7 +72,6 @@ export default function QueryPage() {
               className="w-full px-3 py-2 rounded-md bg-gray-900 border border-gray-700 text-gray-200 focus:outline-none focus:border-indigo-500 transition"
             />
           </div>
-
           <div className="flex flex-col space-y-2">
             <label className="text-sm text-gray-400">Phone Number</label>
             <input
@@ -87,25 +84,25 @@ export default function QueryPage() {
               className="w-full px-3 py-2 rounded-md bg-gray-900 border border-gray-700 text-gray-200 focus:outline-none focus:border-indigo-500 transition"
             />
           </div>
-
           <div className="flex flex-col space-y-2">
-            <label className="text-sm text-gray-400">Query</label>
-            <textarea
-              name="query"
-              value={formData.query}
+            <label className="text-sm text-gray-400">Number of Clothes</label>
+            <select
+              name="clothes"
+              value={formData.clothes}
               onChange={handleChange}
-              placeholder="Type your query here..."
-              required
-              className="w-full px-3 py-2 rounded-md bg-gray-900 border border-gray-700 text-gray-200 focus:outline-none focus:border-indigo-500 transition resize-none"
-              rows={4}
-            />
+              className="w-full px-3 py-2 rounded-md bg-gray-900 border border-gray-700 text-gray-200 focus:outline-none focus:border-indigo-500 transition"
+            >
+              {[...Array(20)].map((_, i) => (
+                <option key={i} value={i + 1}>{i + 1} Clothes</option>
+              ))}
+            </select>
           </div>
 
           <button
             type="submit"
             className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 text-white font-semibold shadow-lg hover:scale-105 hover:shadow-indigo-500/30 transition-all duration-300"
           >
-            Submit Query
+            Add Entry
           </button>
         </motion.form>
 
@@ -116,9 +113,9 @@ export default function QueryPage() {
           transition={{ duration: 1 }}
           className="space-y-4"
         >
-          <h2 className="text-2xl font-bold text-indigo-400 mb-4">Submitted Queries</h2>
+          <h2 className="text-2xl font-bold text-indigo-400 mb-4">Laundry Entries</h2>
           {entries.length === 0 ? (
-            <p className="text-gray-400">No queries submitted yet.</p>
+            <p className="text-gray-400">No entries yet. Add a laundry entry above.</p>
           ) : (
             <div className="space-y-3">
               {entries.map((entry, index) => (
@@ -127,20 +124,18 @@ export default function QueryPage() {
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="p-4 bg-gray-800 rounded-xl shadow-md hover:shadow-indigo-500/40 transition cursor-pointer flex items-center space-x-3"
+                  className="p-4 bg-gray-800 rounded-xl shadow-md hover:shadow-indigo-500/40 transition cursor-pointer"
                 >
-                  <HelpCircle className="w-6 h-6 text-indigo-400" />
-                  <div>
-                    <p><span className="font-semibold text-indigo-400">Name:</span> {entry.name}</p>
-                    <p><span className="font-semibold text-indigo-400">Room No:</span> {entry.roomNo}</p>
-                    <p><span className="font-semibold text-indigo-400">Phone:</span> {entry.phone}</p>
-                    <p><span className="font-semibold text-indigo-400">Query:</span> {entry.query}</p>
-                  </div>
+                  <p><span className="font-semibold text-indigo-400">Name:</span> {entry.name}</p>
+                  <p><span className="font-semibold text-indigo-400">Room No:</span> {entry.roomNo}</p>
+                  <p><span className="font-semibold text-indigo-400">Phone:</span> {entry.phone}</p>
+                  <p><span className="font-semibold text-indigo-400">Clothes:</span> {entry.clothes}</p>
                 </motion.div>
               ))}
             </div>
           )}
         </motion.div>
+
       </div>
     </div>
   );
