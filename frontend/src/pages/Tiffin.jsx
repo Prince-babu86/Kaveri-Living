@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
+import axios from '../config/axios.config'
 
 export default function TiffinServicePage() {
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ export default function TiffinServicePage() {
     setEntries([...entries, formData]);
     setFormData({ name: "", college: "", phone: "" });
     try {
-      let res = await axios.post("http://localhost:3000/tiffin/create", formData, {
+      let res = await axios.post("/tiffin/create", formData, {
         withCredentials: true,
       });
       console.log(res.data);
